@@ -7,11 +7,11 @@ import java.util.Properties;
 public class Producer {
     public static String topic1Name = "test1";
     public static String topic2Name = "test2";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         produce();
     }
 
-    public static void produce() {
+    public static void produce() throws InterruptedException {
         Properties props = new Properties();
 
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9091");
@@ -36,6 +36,7 @@ public class Producer {
             producer.send(new ProducerRecord<>(topic1Name, k1 + i, topic1Name + " " + v1 + i));
             producer.send(new ProducerRecord<>(topic2Name, k1 + i, topic2Name + " " + v1 + i));
         }
+        Thread.sleep(500);
         producer.abortTransaction();
 
         producer.close();
